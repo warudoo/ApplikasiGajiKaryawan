@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LaporanGajiKaryawan" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.1"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="ktp" class="java.lang.String"/>
+	<parameter name="ruang" class="java.lang.Integer"/>
+	<parameter name="FORMAT" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[
+		SELECT 
+            g.ktp AS ktp,  -- Explicitly alias for robustness
+            k.nama AS nama, 
+            g.kodepekerjaan AS kodepekerjaan, 
+            p.namapekerjaan AS namapekerjaan, -- Explicitly alias
+            p.jumlahtugas AS jumlahtugas,
+            g.gajibersih AS gajibersih, 
+            g.gajikotor AS gajikotor, 
+            g.tunjangan AS tunjangan
+        FROM 
+            tbgaji g
+        JOIN 
+            tbpekerjaan p ON g.kodepekerjaan = p.kodepekerjaan
+        JOIN 
+            tbkaryawan k ON g.ktp = k.ktp
+        WHERE 
+            ($P{ktp} IS NULL OR $P{ktp} = '' OR g.ktp = $P{ktp}) 
+            AND
+            ($P{ruang} IS NULL OR $P{ruang} = 0 OR k.ruang = $P{ruang}) 
+		]]>
+	</queryString>
+	<field name="ktp" class="java.lang.String"/>
+	<field name="nama" class="java.lang.String"/>
+	<field name="kodepekerjaan" class="java.lang.String"/>
+	<field name="namapekerjaan" class="java.lang.String"/>
+	<field name="jumlahtugas" class="java.lang.Integer"/>
+	<field name="gajibersih" class="java.lang.Double"/>
+	<field name="gajikotor" class="java.lang.Double"/>
+	<field name="tunjangan" class="java.lang.Double"/>
+	<variable name="gajibersih_ktp" class="java.lang.Double" resetType="Group" resetGroup="ktp" calculation="Sum">
+		<variableExpression><![CDATA[$F{gajibersih}]]></variableExpression>
+	</variable>
+	<variable name="gajikotor_ktp" class="java.lang.Double" resetType="Group" resetGroup="ktp" calculation="Sum">
+		<variableExpression><![CDATA[$F{gajikotor}]]></variableExpression>
+	</variable>
+	<variable name="tunjangan_ktp" class="java.lang.Double" resetType="Group" resetGroup="ktp" calculation="Sum">
+		<variableExpression><![CDATA[$F{tunjangan}]]></variableExpression>
+	</variable>
+	<group name="ktp">
+		<groupExpression><![CDATA[$F{ktp}]]></groupExpression>
+		<groupHeader>
+			<band height="70"> 
+				<textField isStretchWithOverflow="true"> <!-- Added isStretchWithOverflow -->
+					<reportElement x="0" y="0" width="300" height="15"/>
+					<textElement>
+						<font size="12" isBold="true"/> 
+					</textElement>
+					<textFieldExpression><![CDATA["KTP : " + $F{ktp}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true"> <!-- Added isStretchWithOverflow -->
+					<reportElement x="0" y="15" width="300" height="15"/>
+					<box> <!-- Added border for diagnosis -->
+						<pen lineWidth="0.5"/>
+					</box>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Nama : " + $F{nama}]]></textFieldExpression>
+				</textField>
+
+				<!-- FIX: Mengganti "No" menjadi "No KTP" dan menyesuaikan posisi/lebar kolom -->
+				<staticText>
+					<reportElement x="136" y="45" width="80" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[No KTP]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="216" y="45" width="60" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Kode Pekerjaan]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="276" y="45" width="100" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Nama Pekerjaan]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="376" y="45" width="40" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Tugas]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="416" y="45" width="90" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Gaji Bersih]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="506" y="45" width="90" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Gaji Kotor]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="596" y="45" width="90" height="20"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Tunjangan]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="20">
+				<staticText>
+					<reportElement x="266" y="0" width="100" height="20"/>
+					<textElement textAlignment="Right">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total:]]></text>
+				</staticText>
+				<textField pattern="Rp #,##0.00">
+					<reportElement x="366" y="0" width="90" height="20"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{gajibersih_ktp}]]></textFieldExpression>
+				</textField>
+				<textField pattern="Rp #,##0.00">
+					<reportElement x="456" y="0" width="90" height="20"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{gajikotor_ktp}]]></textFieldExpression>
+				</textField>
+				<textField pattern="Rp #,##0.00">
+					<reportElement x="546" y="0" width="90" height="20"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{tunjangan_ktp}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<title>
+		<band height="90">
+			<staticText>
+				<reportElement x="0" y="20" width="802" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[LAPORAN GAJI KARYAWAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="802" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+					<text><![CDATA[PT WARUD MENCARI CINTA SEJATI]]></text>
+				</staticText>
+			<staticText>
+				<reportElement x="0" y="60" width="802" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[Jl. Surya Kencana No. 99 Pamulang, Tangerang, Banten]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="72" width="300" height="18"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Ruang : " + ($P{ruang} != null ? $P{ruang}.toString() : "Semua")]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="0"/>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<!-- FIX: Mengganti REPORT_COUNT dengan $F{ktp} dan menyesuaikan posisi/lebar -->
+			<textField>
+				<reportElement x="136" y="0" width="80" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ktp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="216" y="0" width="60" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{kodepekerjaan}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="276" y="0" width="100" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{namapekerjaan}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="376" y="0" width="40" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jumlahtugas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="416" y="0" width="90" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gajibersih}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="506" y="0" width="90" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gajikotor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="596" y="0" width="90" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font/>
+				</textElement>
+					<textFieldExpression><![CDATA[$F{tunjangan}]]></textFieldExpression>
+				</textField>
+			</band>
+		</detail>
+		<pageFooter>
+			<band height="20">
+				<textField>
+					<reportElement x="720" y="0" width="100" height="20"/>
+					<textElement>
+						<font/>
+					</textElement>
+					<textFieldExpression><![CDATA["Halaman " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+			</band>
+		</pageFooter>
+</jasperReport>
