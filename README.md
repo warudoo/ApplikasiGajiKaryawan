@@ -1,42 +1,59 @@
-Aplikasi Penggajian Karyawan PT. Salwarud 🏢
-Selamat datang di repositori Aplikasi Penggajian Karyawan! Proyek ini adalah aplikasi web yang dirancang untuk mengelola data gaji karyawan secara efisien. Dibangun sepenuhnya dengan Java di NetBeans IDE 8.2, aplikasi ini menerapkan pola desain Model-View-Controller (MVC) untuk memastikan kode yang terstruktur dan mudah dikelola.
+# 🏢 Aplikasi Penggajian Karyawan PT. Salwarud
 
-✨ Fitur Utama
-👤 Manajemen Karyawan: Melakukan operasi CRUD (Create, Read, Update, Delete) untuk data karyawan.
+<p align="center">
+  <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java">
+  <img src="https://img.shields.io/badge/NetBeans%20IDE-1B6AC6?style=for-the-badge&logo=apache-netbeans-ide&logoColor=white" alt="NetBeans">
+  <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL">
+  <img src="https://img.shields.io/badge/MVC%20Architecture-blue?style=for-the-badge" alt="MVC Architecture">
+</p>
 
-🛠️ Manajemen Pekerjaan: Mengelola data master pekerjaan beserta detailnya.
+Aplikasi web penggajian karyawan yang dirancang untuk mengelola data gaji secara efisien. Proyek ini dibangun sepenuhnya dengan **Java** menggunakan **NetBeans IDE 8.2** dan menerapkan pola desain **Model-View-Controller (MVC)** untuk memastikan kode yang terstruktur dan mudah dikelola.
 
-💰 Transaksi Gaji: Memproses, menghitung, dan menyimpan data gaji karyawan.
+---
 
-🔐 Sistem Login & Keamanan: Dilengkapi dengan sistem otentikasi pengguna. Password disimpan dengan aman menggunakan enkripsi MD5.
+## ✨ Fitur Utama
 
-🔍 Pencarian Data: Fitur pencarian canggih untuk menemukan data gaji berdasarkan KTP atau kode pekerjaan.
+-   **👤 Manajemen Karyawan:** Operasi CRUD (Create, Read, Update, Delete) penuh untuk data karyawan.
+-   **🛠️ Manajemen Pekerjaan:** Mengelola data master pekerjaan beserta detailnya.
+-   **💰 Transaksi Gaji:** Memproses, menghitung, dan menyimpan riwayat gaji karyawan.
+-   **🔐 Sistem Login & Keamanan:** Sistem otentikasi pengguna dengan enkripsi password menggunakan **MD5**.
+-   **🔍 Pencarian Data:** Fitur pencarian canggih untuk data gaji berdasarkan KTP atau kode pekerjaan.
+-   **📄 Laporan Dinamis:** Menghasilkan laporan penggajian yang fleksibel dengan **JasperReports**, yang dapat diekspor ke berbagai format (Excel, ODT, RTF).
 
-📄 Laporan Dinamis: Menghasilkan laporan penggajian yang fleksibel dengan JasperReports. Laporan dapat diekspor ke berbagai format, termasuk:
+---
 
-Excel (.xlsx, .xls)
+## 🏗️ Arsitektur & Teknologi
 
-Open Document Text (.odt)
+Aplikasi ini dibangun di atas tumpukan teknologi Java klasik dan mengikuti arsitektur MVC yang jelas untuk memisahkan logika bisnis, data, dan presentasi.
 
-Rich Text Format (.rtf)
+| Kategori      | Teknologi / Pustaka                                 |
+| :------------ | :-------------------------------------------------- |
+| **Bahasa** | `Java`                                              |
+| **IDE** | `NetBeans IDE 8.2`                                  |
+| **Server** | `GlassFish Server`                                  |
+| **Database** | `MySQL` (terhubung via JDBC)                        |
+| **Pelaporan** | `JasperReports`                                     |
+| **Dependensi** | `MySQL JDBC Driver`, `Apache Commons`, `iText`, `POI` |
 
-🏗️ Arsitektur Proyek (MVC)
-Aplikasi ini mengikuti arsitektur Model-View-Controller. Berikut adalah gambaran struktur direktori proyek:
+<br>
+
+<details>
+<summary>📂 Struktur Proyek</summary>
+
+```
 
 ApplikasiGajiKaryawan/
 ├── src/
 │   └── java/
 │       └── com/
 │           └── unpam/
-│               ├── controller/
+│               ├── controller/ (Logika & Jembatan)
 │               │   ├── GajiController.java
-│               │   ├── KaryawanController.java
-│               │   └── ... (servlet lainnya)
-│               ├── model/
+│               │   └── KaryawanController.java
+│               ├── model/ (Data & Logika Bisnis)
 │               │   ├── Gaji.java
-│               │   ├── Karyawan.java
-│               │   └── ... (model lainnya)
-│               └── view/
+│               │   └── Karyawan.java
+│               └── view/ (Tampilan & UI)
 │                   ├── MainForm.java
 │                   └── PesanDialog.java
 ├── web/
@@ -45,10 +62,28 @@ ApplikasiGajiKaryawan/
 │   └── style.css
 └── build.xml
 
-📦 Model
-Bagian ini bertanggung jawab atas data dan logika bisnis aplikasi. Contohnya adalah kelas Koneksi.java yang mengelola hubungan ke database.
+````
 
-// Contoh dari com/unpam/model/Koneksi.java
+</details>
+
+---
+
+## 🚀 Alur Kerja & Contoh Kode
+
+Aplikasi ini memiliki alur kerja yang terstruktur mulai dari otentikasi hingga pelaporan.
+
+1.  **Login:** Pengguna melakukan otentikasi melalui `LoginController` yang memvalidasi kredensial.
+2.  **Dashboard:** Setelah berhasil, pengguna diarahkan ke `MainForm` yang menjadi pusat navigasi.
+3.  **Manajemen Data:** Pengguna mengelola data Karyawan, Pekerjaan, atau Gaji melalui `Controller` yang sesuai.
+4.  **Pembuatan Laporan:** `LaporanGajiController` memproses permintaan laporan dan menggunakan `JasperReports` untuk menghasilkan output.
+
+<br>
+
+<details>
+<summary>📦 Contoh Kode Model (Koneksi Database)</summary>
+
+```java
+// com/unpam/model/Koneksi.java
 public class Koneksi {
     public Connection con;
     public Statement stm;
@@ -67,20 +102,15 @@ public class Koneksi {
         }
     }
 }
+````
 
-🖼️ View
-Bagian ini bertanggung jawab atas tampilan dan antarmuka pengguna. Semua elemen HTML, seperti form dan tabel, digenerate secara dinamis oleh Controller dan disajikan melalui MainForm.java.
+\</details\>
 
-MainForm.java: Bertindak sebagai template utama.
+\<details\>
+\<summary\>🎮 Contoh Kode Controller (Logika Karyawan)\</summary\>
 
-PesanDialog.java: Menampilkan notifikasi.
-
-style.css: Mengatur seluruh tampilan visual aplikasi.
-
-🎮 Controller (Java Servlets)
-Controller bertindak sebagai jembatan antara Model dan View. Setiap permintaan HTTP dari pengguna akan ditangani oleh servlet yang sesuai.
-
-// Contoh dari com/unpam/controller/KaryawanController.java
+```java
+// com/unpam/controller/KaryawanController.java
 @WebServlet(name = "KaryawanController", urlPatterns = {"/KaryawanController"})
 public class KaryawanController extends HttpServlet {
 
@@ -109,41 +139,18 @@ public class KaryawanController extends HttpServlet {
     }
     // ... metode doGet dan doPost
 }
+```
 
-🚀 Teknologi & Pustaka
-Kategori
+\</details\>
 
-Teknologi / Pustaka
 
-Bahasa
+### Perubahan Utama:
 
-Java
+1.  **Header Profesional:** Menambahkan *badges* (lencana) di bagian atas untuk menyoroti teknologi utama yang Anda gunakan (Java, NetBeans, MySQL). Ini memberikan kesan pertama yang modern.
+2.  **Struktur yang Jelas:** Menggunakan heading (`##`) untuk membagi README menjadi bagian-bagian yang logis seperti "Fitur Utama", "Arsitektur & Teknologi", dan "Alur Kerja".
+3.  **Tabel Teknologi:** Mengubah daftar teknologi menjadi tabel yang rapi agar lebih mudah dibaca.
+4.  **Struktur Proyek yang Bisa Dilipat (`<details>`):** Struktur direktori dan contoh kode yang panjang saya masukkan ke dalam tag `<details>` yang bisa diklik untuk dibuka. Ini membuat README utama terlihat jauh lebih ringkas dan tidak mengintimidasi.
+5.  **Penekanan dengan Bold:** Memberi penekanan pada kata kunci penting seperti **Java**, **NetBeans IDE 8.2**, dan **Model-View-Controller (MVC)** menggunakan `**`.
 
-IDE
-
-NetBeans IDE 8.2
-
-Server
-
-GlassFish Server
-
-Database
-
-MySQL (terhubung via JDBC)
-
-Pelaporan
-
-JasperReports
-
-Dependensi
-
-MySQL JDBC Driver, Pustaka Apache Commons, iText, POI
-
-⚙️ Alur Kerja Aplikasi
-Login: Pengguna mengakses aplikasi dan harus melakukan login. LoginController akan memvalidasi kredensial dengan mengenkripsi password yang diinput.
-
-Dashboard: Setelah berhasil login, pengguna akan diarahkan ke halaman utama (MainForm) yang berisi menu navigasi.
-
-Manajemen Data: Pengguna dapat memilih menu untuk mengelola data master (Karyawan, Pekerjaan) atau data transaksi (Gaji). Setiap aksi (tambah, ubah, hapus) akan ditangani oleh Controller yang sesuai.
-
-Pembuatan Laporan: Melalui menu laporan, LaporanGajiController akan menampilkan opsi filter. Setelah filter diterapkan, JasperReports akan menghasilkan laporan sesuai format yang dipilih.
+Sekarang README Anda terlihat jauh lebih terstruktur dan profesional!
+```
