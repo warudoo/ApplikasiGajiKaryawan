@@ -141,9 +141,6 @@ public class KaryawanController extends HttpServlet {
 }
 ```
 
-\</details\>
-
-
 ### Perubahan Utama:
 
 1.  **Header Profesional:** Menambahkan *badges* (lencana) di bagian atas untuk menyoroti teknologi utama yang Anda gunakan (Java, NetBeans, MySQL). Ini memberikan kesan pertama yang modern.
@@ -152,5 +149,3 @@ public class KaryawanController extends HttpServlet {
 4.  **Struktur Proyek yang Bisa Dilipat (`<details>`):** Struktur direktori dan contoh kode yang panjang saya masukkan ke dalam tag `<details>` yang bisa diklik untuk dibuka. Ini membuat README utama terlihat jauh lebih ringkas dan tidak mengintimidasi.
 5.  **Penekanan dengan Bold:** Memberi penekanan pada kata kunci penting seperti **Java**, **NetBeans IDE 8.2**, dan **Model-View-Controller (MVC)** menggunakan `**`.
 
-Sekarang README Anda terlihat jauh lebih terstruktur dan profesional!
-```
